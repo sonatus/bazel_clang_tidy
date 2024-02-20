@@ -82,9 +82,7 @@ def _rule_sources(ctx):
         """
         Returns True if the file type matches one of the permitted srcs file types for C and C++ header/source files.
         """
-        permitted_file_types = [
-            ".c", ".cc", ".cpp", ".cxx", ".c++", ".C", ".h", ".hh", ".hpp", ".hxx", ".inc", ".inl", ".H",
-        ]
+        permitted_file_types = [".c", ".cc", ".cpp", ".cxx", ".c++", ".C"]
         for file_type in permitted_file_types:
             if src.basename.endswith(file_type):
                 return True
@@ -94,9 +92,6 @@ def _rule_sources(ctx):
     if hasattr(ctx.rule.attr, "srcs"):
         for src in ctx.rule.attr.srcs:
             srcs += [src for src in src.files.to_list() if src.is_source and check_valid_file_type(src)]
-    if hasattr(ctx.rule.attr, "hdrs"):
-        for hdr in ctx.rule.attr.hdrs:
-            srcs += [hdr for hdr in hdr.files.to_list() if hdr.is_source and check_valid_file_type(hdr)]
     return srcs
 
 def _toolchain_flags(ctx, action_name = ACTION_NAMES.cpp_compile):
